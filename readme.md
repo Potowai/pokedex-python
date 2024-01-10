@@ -40,6 +40,7 @@ pip install django requests
 ### Initialiser Django
 Effectuez les migrations initiales :
 ```
+cd pokedex
 python manage.py migrate
 ```
 ### Lancez le serveur de développement :
