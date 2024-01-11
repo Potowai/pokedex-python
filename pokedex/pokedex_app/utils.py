@@ -15,7 +15,6 @@ def import_pokemon_data():
 def get_pokemon_by_name(_name):
     if Pokemon.objects.filter(name=_name).exists():
         pokemon = Pokemon.objects.get(name=_name)
-        print(f"Pokemon {pokemon} already exists in database")
     else:
         url = f"https://pokeapi.co/api/v2/pokemon/{_name}"
         response = requests.get(url)
@@ -34,7 +33,6 @@ def get_pokemon_by_name(_name):
             base_experience=pokemon_data["base_experience"])
         pokemon.save()
         
-        print("Pokemon added to database")
     return pokemon
 
 @csrf_exempt
