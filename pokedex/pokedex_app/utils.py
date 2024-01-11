@@ -7,7 +7,7 @@ import json
 
 
 def import_pokemon_data():
-    response = requests.get("https://pokeapi.co/api/v2/pokemon/?offset=0&limit=20")
+    response = requests.get("https://pokeapi.co/api/v2/pokemon/?offset=0&limit=151")
     data = response.json()
     pokemons = [get_pokemon_by_name(result["name"]) for result in data["results"]]
     return pokemons
@@ -68,12 +68,30 @@ def create_team_request(request):
 def add_pokemons_to_team_request(request):
     if request.method == 'POST':
         data = json.loads(request.body)
+        print(data)
         team_name = data.get('name')
         pokemon_ids = data.get('pokemon_ids')
         if team_name and pokemon_ids:
             team = Team.objects.get(name=team_name)
-            pokemon = Pokemon.objects.get(pokeid=pokemon_id)
-            team.pokemons.add(pokemon)
+            if team.pokemons.count() + len(pokemon_ids) > 6:
+                return JsonResponse({'success': False})
+            for pokemon_id in pokemon_ids:
+                pokemon = Pokemon.objects.get(pokeid=pokemon_id)
+                team.pokemons.add(pokemon)
+            return JsonResponse({'success': True})
+        else:
+            return JsonResponse({'success': False})
+
+    return JsonResponse({'success': False})
+
+@csrf_exempt
+def delete_team_request(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        team_id = data.get('team_id')
+        if team_id:
+            team = Team.objects.get(id=team_id)
+            team.delete()
             return JsonResponse({'success': True})
         else:
             return JsonResponse({'success': False})

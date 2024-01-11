@@ -4,21 +4,28 @@
     <meta charset="UTF-8">
     <title>Page de Crédits</title>
     <link rel="stylesheet" href="style.css"> <!-- Assurez-vous que le chemin vers votre fichier CSS est correct -->
+    <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+  />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Lato&display=swap"
+    rel="stylesheet"
+  />
 </head>
-<style>
+  <style>
     body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
-    color: #333;
-    margin: 0;
-    padding: 0;
-}
+      background: #1a1a1a;
+      color: #ddd;
+      font-family: "Lato", sans-serif;
+    }
 
 .credits-container {
     width: 80%;
     margin: 0 auto;
     padding: 20px;
-    background-color: white;
     box-shadow: 0 0 10px rgba(0,0,0,0.1);
 }
 
@@ -42,6 +49,7 @@
 
 </style>
 <body>
+    {% include 'sidebar.html' %}
     <div class="credits-container">
         <h1>Page de Crédits</h1>
 
@@ -54,9 +62,9 @@
             <h2>Conception et Développement</h2>
             <p>Nom de votre entreprise ou de votre équipe</p>
             <ul>
-                <li>Développement Web: [Votre Nom]</li>
-                <li>Conception Graphique: [Nom du Concepteur/Graphiste]</li>
-                <li>Gestion de Projet: [Nom du Gestionnaire de Projet]</li>
+                <li>Développement Web: Alexis Fiolleau</li>
+                <li>Conception Graphique: Alexis Fiolleau</li>
+                <li>Gestion de Projet: Alexis Fiolleau</li>
             </ul>
         </section>
 
@@ -68,20 +76,20 @@
         <section>
             <h2>Ressources et Collaborations</h2>
             <ul>
-                <li>Données Pokémon fournies par [Nom de la source des données, si applicable]</li>
-                <li>Images et Graphiques de Pokémon obtenus via [Nom de la source des images, si applicable]</li>
+                <li>Données Pokémon fournies par PokéAPI</li>
+                <li>Images et Graphiques de Pokémon obtenus via PokéAPI </li>
                 <li>Collaboration spéciale avec [Nom des partenaires ou collaborateurs, le cas échéant]</li>
             </ul>
         </section>
 
         <section>
             <h2>Droits d'Auteur et Licences</h2>
-            <p>Le contenu de ce site, y compris le texte, les graphiques et le code source, est protégé par le droit d'auteur et appartient à [Nom de votre entreprise ou de votre équipe], sauf indication contraire. Toutes les marques commerciales mentionnées appartiennent à leurs propriétaires respectifs.</p>
+            <p>Le contenu de ce site, y compris le texte, les graphiques et le code source, est protégé par le droit d'auteur et appartient à Alexis Fiolleau, sauf indication contraire. Toutes les marques commerciales mentionnées appartiennent à leurs propriétaires respectifs.</p>
         </section>
 
         <section>
             <h2>Contact</h2>
-            <p>Pour toute question, suggestion ou commentaire, n'hésitez pas à nous contacter : [Adresse email]</p>
+            <p>Pour toute question, suggestion ou commentaire, n'hésitez pas à nous contacter : alexis.fiolleau@proton.me</p>
         </section>
     </div>
 </body>

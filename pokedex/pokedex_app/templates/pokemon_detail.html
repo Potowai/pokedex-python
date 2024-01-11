@@ -14,6 +14,7 @@
       href="https://fonts.googleapis.com/css2?family=Lato&display=swap"
       rel="stylesheet"
     />
+    <link rel="stylesheet" type="text/css" href="https://unpkg.com/notie/dist/notie.min.css">
     <title>Pokémon Information</title>
     <style>
       body {
@@ -197,7 +198,11 @@
           return response.json()})
         .then(data => {
             if (data.success) {
-                console.log(data);
+                notie.alert({
+                  type:1,
+                    text: 'Le Pokémon a été capturé avec succès !',
+                    time: 2
+                });
             }
                 // Mettez à jour l'interface utilisateur ici si nécessaire
         }).catch((error) => {
@@ -209,5 +214,6 @@ function getCookie(name) {
     return document.cookie.substring(name.length + 1);
 }
     </script>
+    <script src="https://unpkg.com/notie"></script>
   </body>
 </html>

@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from .utils import import_pokemon_data, get_pokemon_by_name,catch_pokemons_request, create_team_request,add_pokemons_to_team_request
+from .utils import import_pokemon_data, get_pokemon_by_name,catch_pokemons_request, create_team_request,add_pokemons_to_team_request,delete_team_request
 from .models import Collection, Team
 
 def pokemon_list(request):
@@ -11,11 +11,12 @@ def pokemon_detail(request, name):
     return render(request, 'pokemon_detail.html', {'pokemon': pokemon})
 
 def pokemon_teams(request):
-    collection = Collection.objects.get(name="my_collection")
-    teams = list(Team.objects.all())
-    for team in teams:
-        print(team.name)
-    return render(request, 'pokemon_teams.html', {'collection': collection.pokemons.all(), 'teams': teams})
+    collection, created = Collection.objects.get_or_create(name="my_collection")
+    teams = Team.objects.all()
+    return render(request, 'pokemon_teams.html', {'collection': collection.pokemons.all(), 'teams': teams })
+
+def credits(request):
+    return render(request, 'credits.html')
 
 def catch_pokemon(request):
     return catch_pokemons_request(request)
@@ -25,3 +26,6 @@ def create_team(request):
 
 def add_pokemons_to_team(request):
     return add_pokemons_to_team_request(request)
+
+def delete_team(request):
+    return delete_team_request(request)

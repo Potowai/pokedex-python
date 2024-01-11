@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="fr">
-<head>
-    <meta charset="UTF-8">
+  <head>
+    <meta charset="UTF-8" />
     <title>Gestion des Équipes Pokémon</title>
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
@@ -13,214 +13,238 @@
       href="https://fonts.googleapis.com/css2?family=Lato&display=swap"
       rel="stylesheet"
     />
-</head>
-<style>
-body {
-    font-family: 'Lato', sans-serif;
-    background-color: #f4f4f4;
-    margin: 0;
-}
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://unpkg.com/notie/dist/notie.min.css"
+    />
+  </head>
+  <style>
+    body {
+      background: #1a1a1a;
+      color: #ddd;
+      font-family: "Lato", sans-serif;
+    }
 
-#pokemon-collection, #team-management {
-    border: 1px solid #ddd;
-    background-color: #fff;
-    padding: 20px;
-    margin-bottom: 20px;
-}
+    #pokemon-collection,
+    #team-management {
+      border: 1px solid #ddd;
+      padding: 20px;
+      margin-bottom: 20px;
+    }
 
-#pokemon-collection {
-    display: grid;
-    grid-auto-flow: column;
-}
+    #pokemon-collection {
+      display: grid;
+      grid-auto-rows: 1fr;
+      grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+      grid-template-rows: 1fr;
+      gap: 0px 10px;
+      grid-template-areas: ". . . . . .";
+      align-items: center;
+      width: auto;
+      height: auto;
+    }
 
-.pokemon-item {
-    border-bottom: 1px solid #eee;
-    margin: 10px;
-    display: flex;
-    align-items: center;
-    border: black 1px solid;
-    border-radius: 5px;
-}
+    .pokemon-item {
+      border-bottom: 1px solid #eee;
+      margin: 10px;
+      display: flex;
+      align-items: center;
+      border: black 1px solid;
+      border-radius: 5px;
+    }
 
+    .team {
+      border: 1px solid #ddd;
+      padding: 10px;
+      margin-bottom: 10px;
+    }
 
-.team {
-    border: 1px solid #ddd;
-    padding: 10px;
-    margin-bottom: 10px;
-    background-color: #f9f9f9;
-}
+    .team-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
 
-.team-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
+    .team-header h3 {
+      margin: 0;
+    }
 
-.team-header h3 {
-    margin: 0;
-}
-
-.button {
-    background-color: #007bff;
-    color: white;
-    border: none;
-    padding: 5px 10px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    margin: 4px 2px;
-    cursor: pointer;
-    border-radius: 4px;
-}
-
-.button:hover {
-    background-color: #0056b3;
-}
-
-.button-small {
-    padding: 2px 5px;
-    font-size: 14px;
-}
-
-.button-danger {
-    background-color: #dc3545;
-}
-
-.button-danger:hover {
-    background-color: #bd2130;
-}
-
-.button-secondary {
-    background-color: #6c757d;
-}
-
-.button-secondary:hover {
-    background-color: #5a6268;
-}
-
-.input-small {
-    border: 1px solid #ccc;
-    padding: 5px;
-    font-size: 16px;
-    border-radius: 4px;
-}
-.container {
-    position: absolute;
-  left: 50%;
-  top: 50%;
-  -webkit-transform: translate(-50%, -50%);
-  transform: translate(-50%, -50%);
-  margin-left: 100px;
-}
-.selected {
-    background-color: #add8e6; /* Couleur pour marquer la sélection */
-}
-</style>
-{% include 'sidebar.html' %}
-<body>
-<div class="container">
-    <div id="pokemon-collection">
-        {% if collection %}
-        {% for pokemon in collection %}
+    .input-small {
+      border: 1px solid #ccc;
+      padding: 5px;
+      font-size: 16px;
+      border-radius: 4px;
+    }
+    .container {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      -webkit-transform: translate(-50%, -50%);
+      transform: translate(-50%, -50%);
+      margin-left: 100px;
+    }
+    .selected {
+      background-color: #1081ef24; /* Couleur pour marquer la sélection */
+    }
+  </style>
+  {% include 'sidebar.html' %}
+  <body>
+    <div class="container">
+      <div id="pokemon-collection">
+        {% if collection %} {% for pokemon in collection %}
         <div class="pokemon-item" data-id="{{ pokemon.pokeid }}">
-            <img src="{{ pokemon.sprites.front_default }}" alt="{{ pokemon.name }}">
-            <p>#{{pokemon.pokeid}} {{pokemon.name | capfirst }}</p>
+          <img
+            src="{{ pokemon.sprites.front_default }}"
+            alt="{{ pokemon.name }}"
+          />
+          <p>#{{pokemon.pokeid}} {{pokemon.name | capfirst }}</p>
         </div>
-        {% endfor %}
-        {% else %}
+        {% endfor %} {% else %}
         <p>Vous n'avez pas encore de Pokémon dans votre collection.</p>
         {% endif %}
-    </div>
-    
-    <div id="team-management">
+      </div>
+
+      <div id="team-management">
         <div id="teams-container">
-            {% if teams %}
-            {% for team in teams %}
-            <div class="team">
-                <div class="team-header">
-                    <h3>{{ team.name }}</h3>
-                    <div class="buttons">
-                        <button id="submit-team">Ajouter à l'équipe</button>
-                        <button class="button button-small button-danger delete-team" data-id="{{ team.id }}">Supprimer</button>
-                    </div>
-                    </div>
-                <div class="team-body">
-                    {{ team.pokemons.name }}
-                </div>
+          {% if teams %} 
+          {% for team in teams %}
+          <div class="team">
+            <div class="team-header">
+              <h3>{{ team.name }}</h3>
+              <div class="buttons">
+                <button class="btn btn-secondary" onclick="addToTeam(this)">
+                  Ajouter à l'équipe
+                </button>
+                <button
+                  class="btn btn-danger delete-team"
+                  onclick="deleteTeam(this)"
+                  data-id="{{ team.id }}"
+                >
+                  Supprimer
+                </button>
+              </div>
             </div>
-            {% endfor %}
-            {% else %}
-            <p>Vous n'avez pas encore d'équipe.</p>
-            {% endif %}
+            <div class="team-body">
+            {% if team.pokemons.all %}
+              {% for pokemon in team.pokemons.all %}
+              <div class="pokemon-item" data-pokemon-id="{{ pokemon.pokeid }}">
+                <img
+                  src="{{ pokemon.sprites.front_default }}"
+                  alt="{{ pokemon.name }}"
+                />
+                <p>#{{pokemon.pokeid}} {{pokemon.name | capfirst }}</p>
+              </div>
+              {% endfor %} 
+                {% else %}
+              <p>Cette équipe ne contient pas encore de Pokémon.</p>
+              {% endif %}
+            </div>
+          </div>
+          {% endfor %} 
+          {% else %}
+          <p>Vous n'avez pas encore d'équipe.</p>
+          {% endif %}
         </div>
-        <button id="add-team">Créer une équipe</button>
+        <button class="btn btn-primary" id="add-team">Créer une équipe</button>
+      </div>
     </div>
-</div>
 
-<script>
-    document.getElementById('add-team').addEventListener('click', function() {
-        const teamName = prompt("Entrez le nom de l'équipe:");
-        if (teamName) {
+    <script>
+      function getCookie(name) {
+        return document.cookie.substring(name.length + 1);
+      }
+
+      document
+        .getElementById("add-team")
+        .addEventListener("click", function () {
+          const teamName = prompt("Entrez le nom de l'équipe:");
+          if (teamName) {
             // Envoie une requête POST à Django
-            fetch('/pokedex/create_team/', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRFToken': getCookie('csrftoken') // Assurez-vous d'avoir ce cookie
-                },
-                body: JSON.stringify({ 'name': teamName})
+            fetch("/pokedex/create_team/", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                "X-CSRFToken": getCookie("csrftoken"), // Assurez-vous d'avoir ce cookie
+              },
+              body: JSON.stringify({ name: teamName }),
             })
-            .then(response => response.json())
-            .then(data => {
+              .then((response) => response.json())
+              .then((data) => {
                 if (data.success) {
-                    alert("Équipe créée avec succès!");
-                    // Mettez à jour l'interface utilisateur ici si nécessaire
+                  window.location.reload();
+                  notie.alert({
+                    type: 1,
+                    text: "Équipe créée avec succès !",
+                    time: 2,
+                  });
+                  // Mettez à jour l'interface utilisateur ici si nécessaire
                 } else {
-                    alert("Équipe déjà existante.");
+                  notie.alert({
+                    type: 3,
+                    text: "Erreur lors de la création de l'équipe.",
+                    time: 2,
+                  });
                 }
-            });
-        }
-    });
-    
-    // Fonction pour obtenir le cookie CSRF de Django
-    function getCookie(name) {
-    return document.cookie.substring(name.length + 1);
-}
+              });
+          }
+        });
 
-document.querySelectorAll('.pokemon-item').forEach(item => {
-    item.addEventListener('click', function() {
-        this.classList.toggle('selected');
-    });
-});
+      // Fonction pour obtenir le cookie CSRF de Django
 
-document.getElementById('submit-team').addEventListener('click', function() {
+      document.querySelectorAll(".pokemon-item").forEach((item) => {
+        item.addEventListener("click", function () {
+          this.classList.toggle("selected");
+        });
+      });
+
+      function addToTeam(buttonElement) {
+    const teamContainer = buttonElement.closest('.team');
+    const teamName = teamContainer.querySelector('h3').innerText;
     const selectedPokemons = document.querySelectorAll('.pokemon-item.selected');
-    const pokemonIds = Array.from(selectedPokemons).map(pokemon => pokemon.getAttribute('data-pokemon-id'));
-    const teamName = this.parentNode.querySelector('h3').innerText;
-    // Envoyer les ID au serveur via une requête AJAX ou fetch
-    // Exemple avec fetch :
-    fetch('/add_pokemons_to_team/', {
+    const pokemonIds = Array.from(selectedPokemons).map(pokemon => pokemon.getAttribute('data-id'));
+    console.log(pokemonIds);
+    fetch('/pokedex/add_pokemons_to_team/', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
-            'X-CSRFToken': getCookie('csrftoken') // Assurez-vous d'avoir ce cookie pour Django
+            'X-CSRFToken': getCookie('csrftoken')
         },
         body: JSON.stringify({ 'name': teamName, 'pokemon_ids': pokemonIds })
     })
     .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            alert("Pokémons ajoutés à l'équipe !");
-        } else {
-            alert("Erreur lors de l'ajout des Pokémons à l'équipe.");
-        }
-    });
-});
+    .then(data => handleResponse(data, 'Pokémons ajoutés à l\'équipe avec succès !'));
+}
 
+function deleteTeam(buttonElement) {
+    const teamId = buttonElement.getAttribute('data-id');
+
+    if (confirm("Êtes-vous sûr de vouloir supprimer cette équipe ?")) {
+        fetch('/pokedex/delete_team/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCookie('csrftoken')
+            },
+            body: JSON.stringify({ 'team_id': teamId })
+        })
+        .then(response => response.json())
+        .then(data => handleResponse(data, 'Équipe supprimée avec succès !'));
+    }
+}
+
+function handleResponse(data, successMessage) {
+    if (data.success) {
+        notie.alert({ type: 1, text: successMessage, time: 2 });
+        window.location.reload();
+    } else {
+        notie.alert({ type: 3, text: 'Erreur lors du traitement de la requête.', time: 2 });
+        console.log(data);
+    }
+}
 
     </script>
-    
 
-</body>
+    <script src="https://unpkg.com/notie"></script>
+  </body>
 </html>
