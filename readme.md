@@ -35,7 +35,7 @@ python -m virtualenv venv
 ### Installer les Dépendances
 Installez toutes les dépendances nécessaires à l'aide de :
 ```
-pip install django requests 
+pip install django requests psycopg2
 ```
 ### Initialiser Django
 Effectuez les migrations initiales :

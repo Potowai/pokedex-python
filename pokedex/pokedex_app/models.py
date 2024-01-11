@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.postgres.fields import ArrayField
+from django.contrib.auth.models import User
 
 class Pokemon(models.Model):
     pokeid = models.IntegerField()
@@ -16,3 +17,13 @@ class Pokemon(models.Model):
     
     def __str__(self):
         return self.name
+
+
+class Collection(models.Model):
+    name = models.CharField(max_length=100)
+    pokemons = models.ManyToManyField(Pokemon, max_length=151)
+    
+class Team(models.Model):
+    name = models.CharField(max_length=100)
+    pokemons = models.ManyToManyField(Pokemon, max_length=6)
+    

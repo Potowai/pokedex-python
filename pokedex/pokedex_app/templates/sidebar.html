@@ -1,0 +1,63 @@
+<style>
+        /* Style du menu latéral */
+        .sidebar {
+            height: 100%;
+            width: 200px;
+            position: fixed;
+            z-index: 1;
+            top: 0;
+            left: 0;
+            background-color: #111;
+            overflow-x: hidden;
+            padding-top: 20px;
+            font-family: 'Lato', sans-serif;
+            border-radius: 0 15px 15px 0;
+            padding-top: 20%;
+        }
+
+        /* Style des éléments de liste */
+        .sidebar ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .sidebar ul li {
+            padding: 10px 15px;
+            text-decoration: none;
+            font-size: 18px;
+            color: white;
+            border-bottom: 1px solid grey;
+        }
+
+        /* Effet hover */
+        .sidebar ul li:hover {
+            background-color: #575757;
+            cursor: pointer;
+        }
+
+        .sidebar ul li a {
+            text-decoration: none;
+            color: #0d6efd;
+
+        }
+        /* Style du contenu */
+        .content {
+            margin-left: 200px;
+            padding: 1px 16px;
+            height: 1000px; /* Ajuster selon le contenu */
+        }
+
+        /* Style pour les éléments inactifs ou en cours */
+        .in-progress {
+            color: grey;
+        }
+
+    </style>
+<div class="sidebar text-center">
+    <ul>
+        <li><a href="/pokedex/">Liste des pokémons</a></li>
+        <li><a href="/pokedex/teams/">Équipes</a></li>
+        <li class="in-progress">Combats - En cours</li>
+        <li><a href="#credits">Crédits</a></li>
+    </ul>
+</div>

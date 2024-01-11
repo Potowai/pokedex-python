@@ -1,139 +1,213 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+  <head>
     {% load filters %}
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Lato&display=swap"
+      rel="stylesheet"
+    />
     <title>Pokémon Information</title>
     <style>
-        .card {
-            background: #fff;
-            border-radius: 8px;
-            padding: 20px;
-            margin-top: 20px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      body {
+        background: #1a1a1a;
+        color: #ddd;
+        font-family: "Lato", sans-serif;
+      }
+      .card {
+        background: #242424;
+        color: #ddd;
+        border-radius: 8px;
+        padding: 20px;
+        margin-top: 20px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+      .container {
+        transform: scale(1.5);
+        transform-origin: top;
+        width: 600px;
+      }
+      .pokemon-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+      .pokemon-body {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        justify-content: space-evenly;
+        flex-direction: column;
+      }
+      .pokemon-image {
+        width: 130px;
+        height: auto;
+      }
+      .pokemon-stats {
+        margin-top: 20px;
+        display: flex;
+        flex-direction: column;
+      }
+      .stats{
+        display: flex;
+        align-items: flex-end;
+        margin: 2px;
+        flex-direction: row-reverse;
+      }
+      .wrapper {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+      }
+      .pokemon-add
+        {
+            align-self: center;
         }
-        .container{
-            width: 600px;
-        }
-        .pokemon-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-        .pokemon-body {
-            display: flex;
-            align-items: center;
-            flex-wrap: wrap;
-            justify-content: space-evenly;
-            flex-direction: column;
-        }
-        .pokemon-image {
-            width: 130px;
-            height: auto;
-        }
-        .pokemon-stats {
-            margin-top: 20px;
-        }
-        .pokemon-stats div {
-            display: flex;
-            width: 85%;
-            align-items: flex-end;
-        }
-        .progress {
-            width: 100%;
-            height: 20px;
-            background-color: #ddd;
-        }
-        .stat-bar {
-            height: 20px;
-            border-radius: 5px;
-        }
-        .pokemon-type {
-            display: inline-block;
-            border-radius: 4px;
-            width: 55px;
-        }
-        .pokemon-ability {
-            font-size: 0.9em;
-            margin-right: 4px;
-            color: #555;
-        }
-        .pokemon-evolution {
-            margin-top: 10px;
-        }
-        .pokemon-evolution img {
-            width: 48px;
-            height: 48px;
-        }
-        .badge {
-            font-size: 0.8em;
-        }
-    </style>
-</head>
-<body class="bg-dark">
-    <div class="container">
-        <div class="card">
-            <div class="pokemon-header">
-                <a href="{% url 'pokemon_list' %}" class="btn btn-primary">&lt; Back</a>
-                <h1>{{pokemon.name | capfirst}} #{{pokemon.pokeid}}</h1>
-            </div>
-            <div class="pokemon-body">
-                <img class="pokemon-image" src="{{pokemon.sprites.front_default}}" alt="sprite">
-                <div>
-                    <span class="badge bg-secondary">Types :</span>
-                    {% for type in pokemon.types %}
-                    <img class="pokemon-type" src="https://play.pokemonshowdown.com/sprites/types/{{ type.type.name | capfirst }}.png" alt="{{ type.type.name }}">
-                    {% endfor %}
-                </div>
-                <div>
-                    <span class="badge bg-secondary">Abilities :</span>
-                    {% for ability in pokemon.abilities %}
-                    <span class="pokemon-ability">{{ability.ability.name | capfirst}}{% if ability.is_hidden %}<bold>(H)</bold>{% endif%}</span>
-                    {% endfor %}
-                </div>
-                
-                
-            </div>
-        <div>
+      .progress {
+        width: 100%;
+        height: 20px;
+        background-color: #ddd;
+      }
+      .stat-bar {
+        height: 20px;
+        border-radius: 5px;
+      }
+      .pokemon-type {
+        display: inline-block;
+        border-radius: 4px;
+        width: 55px;
+      }
+      .pokemon-ability {
+        font-size: 0.9em;
+        margin-right: 4px;
+      }
+      .pokemon-evolution {
+        margin-top: 10px;
+      }
+      .pokemon-evolution img {
+        width: 48px;
+        height: 48px;
+      }
+      .badge {
+        font-size: 0.8em;
+      }
+      .moves-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin: 10px;
+      }
 
+      .move-name {
+        background-color: #505050;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        padding: 5px 20px;
+        font-size: 12px;
+        color: #fff;
+      }
+    </style>
+  </head>
+  <body>
+    {% include 'sidebar.html' %}
+    <div class="container">
+      <div class="card">
+        <div class="pokemon-header">
+          <a href="{% url 'pokemon_list' %}" class="btn btn-primary"
+            >&lt; Back</a
+          >
+          <h1>{{pokemon.name | capfirst}} #{{pokemon.pokeid}}</h1>
         </div>
+        <div class="pokemon-body">
+          <img
+            class="pokemon-image"
+            src="{{pokemon.sprites.front_default}}"
+            alt="sprite"
+          />
+          <div>
+            <span class="badge bg-secondary">Types :</span>
+            {% for type in pokemon.types %}
+            <img
+              class="pokemon-type"
+              src="https://play.pokemonshowdown.com/sprites/types/{{ type.type.name | capfirst }}.png"
+              alt="{{ type.type.name }}"
+            />
+            {% endfor %}
+          </div>
+          <div>
+            <span class="badge bg-secondary">Abilities :</span>
+            {% for ability in pokemon.abilities %}
+            <span class="pokemon-ability text-primary">
+              {{ability.ability.name | capfirst}}{% if ability.is_hidden %}<bold>(H)</bold>{% endif%}
+            </span>
+            {% endfor %}
+          </div>
+        </div>
+        <div class="d-flex justify-content-around">
             <div class="pokemon-stats">
                 <span class="badge bg-secondary">Base stats :</span>
                 {% for stats in pokemon.stats %}
-                        <div>
-                            <div><span>{{ stats.stat.name | capfirst }}:  </span></div>
-                            <div>
-                                <div class="stat-bar {{stats.base_stat | bar_color }}" style="width: {{stats.base_stat}}px;"></div>
-                                <span><bold>{{stats.base_stat}}</bold></span>
-                            </div>
-                        </div>
+                <div class="wrapper">
+                  <span class="badge">{{ stats.stat.name | capfirst }} :</span>
+                  <div class="stats">
+                    <div
+                      class="stat-bar {{stats.base_stat | bar_color }}"
+                      style="width: {{stats.base_stat}}px;"
+                    ></div>
+                    <span class="badge"><bold>{{stats.base_stat}}</bold></span>
+                  </div>
+                </div>
                 {% endfor %}
-            </div>
-            <div class="pokemon-evolution">
-                <span class="badge bg-secondary">Evolution :</span>
-                <p>Pichu → Pikachu → Raichu</p>
-            </div>
-            <div class="pokemon-egg-group">
-                <span class="badge bg-secondary">Egg group :</span>
-                <p>Field, Fairy</p>
-            </div>
-            <div class="pokemon-gender">
-                <span class="badge bg-secondary">Gender</span>
-                <p>50% male, 50% female</p>
-            </div>
-            <div class="pokemon-hatch-steps">
-                <span class="badge bg-secondary">Hatch steps</span>
-                <p>2560</p>
-            </div>
-            <div class="pokemon-moves">
-                <span class="badge bg-secondary">Moves</span>
-                <p>Thunder Shock, Growl, Tail Whip, Thunder Wave, Quick Attack, Electro Ball, Thunderbolt, Double Team, Slam, Thunder, Agility, Discharge, Light Screen, Thunder Punch, Volt Tackle, Wild Charge, Play Nice, Charm, Nuzzle, Baby-Doll Eyes, Sweet Kiss, Wish, Yawn, Covet, Bestow, Encore, Fake Out, Flatter, Follow Me, Natural Gift, Present, Reversal, S
-                </p>
-            </div>
+              </div>
+              <div class="pokemon-add"><button class="btn btn-primary" type="button" onclick="catch_it('{{pokemon.pokeid}}')">Catch It!</button></div>
         </div>
+        <div class="pokemon-moves">
+          <span class="badge bg-secondary">Moves :</span>
+          <div class="moves-container">
+            {% for move in pokemon.moves %}
+            <span class="move-name">{{move.move.name | capfirst}}</span>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-</body>
+    <script>
+        function catch_it(pokemon_id) {
+        fetch('/pokedex/catch_pokemon/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCookie('csrftoken') // Assurez-vous d'avoir ce cookie
+            },
+            body: JSON.stringify({ 'pokemon_id': pokemon_id })
+        })
+        .then(response => {
+          if (!response.ok) {
+            console.log(response);
+            throw new Error('Le Pokémon n\'a pas pu être capturé.');
+          }
+          return response.json()})
+        .then(data => {
+            if (data.success) {
+                console.log(data);
+            }
+                // Mettez à jour l'interface utilisateur ici si nécessaire
+        }).catch((error) => {
+            console.error('Erreur :', error);
+        });
+    };
+
+function getCookie(name) {
+    return document.cookie.substring(name.length + 1);
+}
+    </script>
+  </body>
 </html>
