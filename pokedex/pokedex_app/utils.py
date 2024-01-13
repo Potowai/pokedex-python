@@ -5,13 +5,18 @@ from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 import json
 
-
+# Fonction import_pokemon_data
+# Cette fonction récupère les données de Pokémon à partir de l'API externe pokeapi.co. 
+# Elle renvoie une liste de Pokémon après avoir récupéré les données de chacun via la fonction get_pokemon_by_name.
 def import_pokemon_data():
     response = requests.get("https://pokeapi.co/api/v2/pokemon/?offset=0&limit=151")
     data = response.json()
     pokemons = [get_pokemon_by_name(result["name"]) for result in data["results"]]
     return pokemons
 
+# Fonction get_pokemon_by_name
+# Cette fonction vérifie d'abord si un Pokémon avec le nom spécifié existe déjà dans la base de données. 
+# Si c'est le cas, elle le renvoie. Sinon, elle récupère les données de ce Pokémon à partir de l'API externe, crée une nouvelle instance de Pokemon, la sauvegarde dans la base de données et la renvoie.
 def get_pokemon_by_name(_name):
     if Pokemon.objects.filter(name=_name).exists():
         pokemon = Pokemon.objects.get(name=_name)
@@ -35,6 +40,9 @@ def get_pokemon_by_name(_name):
         
     return pokemon
 
+# Fonction catch_pokemons_request
+# Une vue Django qui gère les requêtes POST pour "attraper" un Pokémon. 
+# Elle extrait l'ID du Pokémon de la requête, le récupère et l'ajoute à une collection nommée "my_collection".
 @csrf_exempt
 def catch_pokemons_request(request):
     if request.method == 'POST':
@@ -50,6 +58,9 @@ def catch_pokemons_request(request):
 
     return JsonResponse({'success': False})
 
+# Fonction create_team_request
+# Cette vue gère les requêtes POST pour créer une équipe de Pokémon. 
+# Si une équipe avec le nom spécifié n'existe pas, elle est créée.
 @csrf_exempt
 def create_team_request(request):
     if request.method == 'POST':
@@ -64,6 +75,9 @@ def create_team_request(request):
 
     return JsonResponse({'success': False})
 
+# Fonction add_pokemons_to_team_request
+# Cette vue gère les requêtes POST pour ajouter des Pokémon à une équipe.
+# Elle extrait le nom de l'équipe et les ID des Pokémon de la requête, puis ajoute chaque Pokémon à l'équipe.
 @csrf_exempt
 def add_pokemons_to_team_request(request):
     if request.method == 'POST':
@@ -84,6 +98,9 @@ def add_pokemons_to_team_request(request):
 
     return JsonResponse({'success': False})
 
+# Fonction delete_team_request
+# Cette vue gère les requêtes POST pour supprimer une équipe.
+# Elle extrait le nom de l'équipe de la requête et la supprime.
 @csrf_exempt
 def delete_team_request(request):
     if request.method == 'POST':
