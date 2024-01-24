@@ -97,6 +97,7 @@ python manage.py runserver
 ## Usage
 Une fois lancé, accédez à l'application sur le port 8000, soit à l'adresse suivante : http://localhost:8000/pokedex. Explorez l'interface pour découvrir les différentes fonctionnalités du Pokedex.
 
+Il existe également une version déployée, le lien ici : https://potowai.pythonanywhere.com/pokedex/.
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ## Contact
